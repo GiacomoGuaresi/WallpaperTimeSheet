@@ -68,7 +68,7 @@ namespace WallpaperTimeSheet.Utills
                 foreach (KeyValuePair<WorkTask, int> task in day.Tasks)
                 {
                     int taskHeight = (int)((double)task.Value / maxWorkHours * barHeight);
-                    SolidBrush taskBrush = new SolidBrush(task.Key.Color);
+                    SolidBrush taskBrush = new SolidBrush(ColorsUtilis.ToColor(task.Key.Color));
                     Rectangle taskRect = new Rectangle(x, lastY - taskHeight, barWidth, taskHeight);
                     g.FillRectangle(taskBrush, taskRect);
                     lastY -= taskRect.Height;

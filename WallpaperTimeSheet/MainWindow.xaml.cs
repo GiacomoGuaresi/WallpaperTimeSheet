@@ -30,7 +30,27 @@ namespace WallpaperTimeSheet
             List<WorkLog> workLogs = WorkLogData.GetWorkLogsFromDate(CalendarUtils.GetCalendarStartDate());
             calendarUtils.ConvertWorkLogToWorkDay(workLogs);
 
-            imageGenerator.Draw(calendarUtils.Days);
+
+            //TODO: select current task 
+            Random rnd = new Random();
+            WorkTask activeTask;
+            switch (rnd.Next(1, 5))
+            {
+                case 1:
+                    activeTask = new WorkTask() { Label = "Task 1", Color = "#e81123" };
+                    break;
+                case 2:
+                    activeTask = new WorkTask() { Label = "Task 2", Color = "#107c10" };
+                    break;
+                case 3:
+                    activeTask = new WorkTask() { Label = "Task 3", Color = "#0063b1" };
+                    break;
+                default:
+                    activeTask = new WorkTask() { Label = "", Color = "#191919" };
+                    break;
+            }
+
+            imageGenerator.Draw(calendarUtils.Days, activeTask);
             wallpaper.SetDefaultWallpaper();
         }
 
@@ -46,6 +66,25 @@ namespace WallpaperTimeSheet
 
         private void Button4_Click(object sender, RoutedEventArgs e)
         {
+            WorkTaskData.AddWorkTaskToDb(new WorkTask
+            {
+                Id = 1,
+                Color = "#FF0000",
+                Label = "Task 1"
+            });
+            WorkTaskData.AddWorkTaskToDb(new WorkTask
+            {
+                Id = 2,
+                Color = "#00FF00",
+                Label = "Task 2"
+            });
+            WorkTaskData.AddWorkTaskToDb(new WorkTask
+            {
+                Id = 3,
+                Color = "#0000FF",
+                Label = "Task 3"
+            });
+            
             List<WorkTask> workTasks = WorkTaskData.GetAllWorkTasks();
             Random rnd = new Random();
 

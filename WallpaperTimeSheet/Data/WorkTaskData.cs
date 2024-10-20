@@ -26,5 +26,11 @@ namespace WallpaperTimeSheet.Data
             }
         }
 
+        public static readonly WorkTask None = new WorkTask
+        {
+            Id = 0,
+            Label = "Nessuna",
+            Color = "#333333"
+        };
     }
 }

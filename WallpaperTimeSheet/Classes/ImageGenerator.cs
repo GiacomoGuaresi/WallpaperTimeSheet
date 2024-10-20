@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Controls;
+using WallpaperTimeSheet.Data;
 using WallpaperTimeSheet.Models;
 
 namespace WallpaperTimeSheet.Utills
@@ -119,6 +120,11 @@ namespace WallpaperTimeSheet.Utills
 
         private void DrawActiveTask(Graphics g, WorkTask task, int widgetX, int widgetY, int widgetWidth, int widgetHeight, Font font)
         {
+            if(task == null)
+            {
+                task = WorkTaskData.None;
+            }
+
             Brush brush = new SolidBrush(ColorsUtilis.ToColor(task.Color));
             Rectangle rect = new Rectangle(widgetX, widgetY, widgetWidth, widgetHeight + 50);
             g.FillRectangle(brush, rect);

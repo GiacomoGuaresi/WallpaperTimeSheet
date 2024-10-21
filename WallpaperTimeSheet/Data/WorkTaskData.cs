@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WallpaperTimeSheet.Classes;
 using WallpaperTimeSheet.Models;
 
 namespace WallpaperTimeSheet.Data
@@ -30,7 +31,7 @@ namespace WallpaperTimeSheet.Data
         {
             Id = 0,
             Label = "Nessuna",
-            Color = "#333333"
+            Color = TaskColors.Grigio.HexColor
         };
     }
 }

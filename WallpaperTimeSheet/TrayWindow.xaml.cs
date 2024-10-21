@@ -5,6 +5,8 @@ using WallpaperTimeSheet.Data;
 using WallpaperTimeSheet.Models;
 using WallpaperTimeSheet.Utills;
 using System.IO;
+using YourNamespace;
+using WallpaperTimeSheet.Classes;
 
 namespace WallpaperTimeSheet
 {
@@ -45,19 +47,19 @@ namespace WallpaperTimeSheet
             WorkTaskData.AddWorkTaskToDb(new WorkTask
             {
                 Id = 1,
-                Color = "#FF0000",
+                Color = TaskColors.Rosso.HexColor,
                 Label = "Task 1"
             });
             WorkTaskData.AddWorkTaskToDb(new WorkTask
             {
                 Id = 2,
-                Color = "#00FF00",
+                Color = TaskColors.Verde.HexColor,
                 Label = "Task 2"
             });
             WorkTaskData.AddWorkTaskToDb(new WorkTask
             {
                 Id = 3,
-                Color = "#0000FF",
+                Color = TaskColors.Blu.HexColor,
                 Label = "Task 3"
             });
 
@@ -105,8 +107,7 @@ namespace WallpaperTimeSheet
             WorkLogData.UpsertWorkLogToDb(SelectedWorkTask?.Id, DateTime.Now);
             UpdateWallpaper();
         }
-
-
+ 
         private void UpdateWallpaper()
         {
             string pictureFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);

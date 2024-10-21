@@ -39,7 +39,7 @@ namespace WallpaperTimeSheet
         {
             _notifyIcon = new NotifyIcon
             {
-                Icon = new System.Drawing.Icon("trayIcon.ico"),
+                Icon = new System.Drawing.Icon("Icons/ic_fluent_briefcase_24_filled.ico"),
                 Visible = true
             };
             _notifyIcon.Click += NotifyIcon_Click;
@@ -68,6 +68,12 @@ namespace WallpaperTimeSheet
             _notifyIcon?.Dispose();
             _trayWindow?.Close();
             Shutdown();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            WorkLogData.UpsertWorkLogToDb(null, DateTime.Now);
+            base.OnExit(e);
         }
     }
 

@@ -10,9 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\ic_fluent_briefcase_24_filled.ico" />
+    <None Remove="Icons\ic_fluent_briefcase_24_filled.png" />
+    <None Remove="Icons\ic_fluent_briefcase_off_24_filled.ico" />
+    <None Remove="Icons\ic_fluent_briefcase_off_24_filled.png" />
     <None Remove="Icons\ic_fluent_color_background_24_filled.png" />
     <None Remove="Icons\ic_fluent_door_arrow_left_24_filled.png" />
-    <None Remove="trayIcon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,12 +31,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="trayIcon.ico">
+    <EmbeddedResource Include="Icons\ic_fluent_briefcase_24_filled.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
+    <EmbeddedResource Include="Icons\ic_fluent_briefcase_24_filled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Icons\ic_fluent_briefcase_off_24_filled.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Icons\ic_fluent_briefcase_off_24_filled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Resource Include="Icons\ic_fluent_color_background_24_filled.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

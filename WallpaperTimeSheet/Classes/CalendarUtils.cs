@@ -11,32 +11,6 @@ namespace WallpaperTimeSheet.Utills
         }
         public List<WorkDay> Days { get; set; }
 
-        public void MockData()
-        {
-            var currentDate = DateTime.Now;
-            var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
-            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-
-            var startDate = firstDayOfMonth.AddDays(1 - (int)firstDayOfMonth.DayOfWeek);
-            var endDate = startDate.AddDays((7 * 6) - 1);
-
-            // Crea i WorkDay per l'intervallo di date
-            Random rnd = new Random();
-            Days = new List<WorkDay>();
-            for (var date = startDate; date <= endDate; date = date.AddDays(1))
-            {
-                Days.Add(new WorkDay()
-                {
-                    Date = date,
-                    Tasks = new Dictionary<WorkTask, int>() {
-                        { new WorkTask() { Label = "Task 1", Color = ColorsUtilis.ToHex(Color.Red)}, rnd.Next(1, 4) },
-                        { new WorkTask() { Label = "Task 2", Color = ColorsUtilis.ToHex(Color.Blue)}, rnd.Next(1, 4) },
-                        { new WorkTask() { Label = "Task 3", Color = ColorsUtilis.ToHex(Color.Green)}, rnd.Next(1, 4) }
-                    }
-                });
-            }
-        }
-
         public static DateTime GetCalendarStartDate()
         {
             var currentDate = DateTime.Now;

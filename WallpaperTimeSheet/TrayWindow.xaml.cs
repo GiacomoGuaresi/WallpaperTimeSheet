@@ -16,7 +16,7 @@ namespace WallpaperTimeSheet
     public partial class TrayWindow : Window
     {
         private List<WorkTask> WorkTasks { get; set; }
-        private WorkTask SelectedWorkTask { get; set; }
+        public static WorkTask? SelectedWorkTask { get; set; }
 
         public TrayWindow(List<WorkTask> workTasks)
         {
@@ -108,7 +108,7 @@ namespace WallpaperTimeSheet
             UpdateWallpaper();
         }
  
-        private void UpdateWallpaper()
+        public static void UpdateWallpaper()
         {
             string pictureFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             string filePath = System.IO.Path.Combine(pictureFolder, "WTS.bmp");

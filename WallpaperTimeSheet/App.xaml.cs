@@ -1,7 +1,5 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Timers;
 using System.Windows;
-using System.Windows.Forms;
 using WallpaperTimeSheet.Data;
 
 namespace WallpaperTimeSheet
@@ -13,6 +11,7 @@ namespace WallpaperTimeSheet
     {
         private NotifyIcon? _notifyIcon;
         private TrayWindow? _trayWindow;
+        private System.Timers.Timer _timer;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -20,6 +19,7 @@ namespace WallpaperTimeSheet
             CreateNotifyIcon();
             CreateTrayWindow();
             ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            ScheduleTask();
         }
 
         private void CreateTrayWindow()
@@ -63,16 +63,34 @@ namespace WallpaperTimeSheet
             return _notifyIcon;
         }
 
-        private void Exit(object sender, EventArgs e, NotifyIcon? _notifyIcon)
+        private void ScheduleTask()
         {
-            _notifyIcon?.Dispose();
-            _trayWindow?.Close();
-            Shutdown();
+            DateTime now = DateTime.Now;
+            DateTime nextRun = new DateTime(now.Year, now.Month, now.Day, now.Hour, 1, 0).AddHours(now.Minute >= 1 ? 1 : 0);
+            double intervalToNextRun = (nextRun - now).TotalMilliseconds;
+
+            _timer = new System.Timers.Timer(intervalToNextRun);
+            _timer.Elapsed += Timer_Elapsed;
+            _timer.AutoReset = false;
+            _timer.Start();
+        }
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            TrayWindow.UpdateWallpaper();
+
+            _timer.Interval = TimeSpan.FromHours(1).TotalMilliseconds;
+            _timer.Start();
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
             WorkLogData.UpsertWorkLogToDb(null, DateTime.Now);
+            
+            _notifyIcon?.Dispose();
+            _trayWindow?.Close();
+            _timer?.Dispose();
+
             base.OnExit(e);
         }
     }

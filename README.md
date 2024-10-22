@@ -43,4 +43,5 @@ WallpaperTimeSheet è ancora in fase di sviluppo, e le seguenti funzionalità sono
 
 ## Licenza
 
-MIT License
+GNU GENERAL PUBLIC LICENSE
+

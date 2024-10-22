@@ -44,24 +44,24 @@ namespace WallpaperTimeSheet
 
         private void Button4_Click(object sender, RoutedEventArgs e)
         {
-            WorkTaskData.AddWorkTaskToDb(new WorkTask
-            {
-                Id = 1,
-                Color = TaskColors.Rosso.HexColor,
-                Label = "Task 1"
-            });
-            WorkTaskData.AddWorkTaskToDb(new WorkTask
-            {
-                Id = 2,
-                Color = TaskColors.Verde.HexColor,
-                Label = "Task 2"
-            });
-            WorkTaskData.AddWorkTaskToDb(new WorkTask
-            {
-                Id = 3,
-                Color = TaskColors.Blu.HexColor,
-                Label = "Task 3"
-            });
+            //WorkTaskData.AddWorkTaskToDb(new WorkTask
+            //{
+            //    Id = 1,
+            //    Color = TaskColors.Rosso.HexColor,
+            //    Label = "Task 1"
+            //});
+            //WorkTaskData.AddWorkTaskToDb(new WorkTask
+            //{
+            //    Id = 2,
+            //    Color = TaskColors.Verde.HexColor,
+            //    Label = "Task 2"
+            //});
+            //WorkTaskData.AddWorkTaskToDb(new WorkTask
+            //{
+            //    Id = 3,
+            //    Color = TaskColors.Blu.HexColor,
+            //    Label = "Task 3"
+            //});
 
             List<WorkTask> workTasks = WorkTaskData.GetAllWorkTasks();
             Random rnd = new Random();
@@ -115,13 +115,16 @@ namespace WallpaperTimeSheet
 
             WindowsUtils wallpaper = new(filePath);
             ImageGenerator imageGenerator = new(filePath);
-            CalendarUtils calendarUtils = new();
 
             List<WorkLog> workLogs = WorkLogData.GetWorkLogsFromDate(CalendarUtils.GetCalendarStartDate());
-            calendarUtils.ConvertWorkLogToWorkDay(workLogs);
+            List<WorkDay> workDays = CalendarUtils.ConvertWorkLogToWorkDay(workLogs);
 
-            imageGenerator.Draw(calendarUtils.Days, SelectedWorkTask);
-            wallpaper.SetDefaultWallpaper();
+            List<TaskSummary> summaries = CalendarUtils.ConvertWorkDaysToTaskSummary(workDays);
+
+            new Task(() => { 
+                imageGenerator.Draw(workDays, SelectedWorkTask, summaries);
+                wallpaper.SetDefaultWallpaper();
+            }).Start();
         }
     }
 }

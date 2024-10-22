@@ -23,7 +23,7 @@ namespace WallpaperTimeSheet.Utills
             bitmap = new Bitmap((int)ScreenWidth, (int)ScreenHeight);
         }
 
-        public void Draw(List<WorkDay> workDays, WorkTask activeTask)
+        public void Draw(List<WorkDay> workDays, WorkTask activeTask, List<TaskSummary> taskSummaries)
         {
             using (Graphics g = Graphics.FromImage(bitmap))
             {
@@ -46,6 +46,16 @@ namespace WallpaperTimeSheet.Utills
                     int.Parse(ConfigurationManager.AppSettings["ActiveTaskWidgetWidth"]),
                     int.Parse(ConfigurationManager.AppSettings["ActiveTaskWidgetHeight"]),
                     new Font("Arial", int.Parse(ConfigurationManager.AppSettings["ActiveTaskWidgetFontSize"])));
+
+                DrawTaskSummary(
+                    g,
+                    taskSummaries,
+                    int.Parse(ConfigurationManager.AppSettings["TaskSummaryWidgetX"]),
+                    int.Parse(ConfigurationManager.AppSettings["TaskSummaryWidgetY"]),
+                    int.Parse(ConfigurationManager.AppSettings["TaskSummaryWidgetWidth"]),
+                    int.Parse(ConfigurationManager.AppSettings["TaskSummaryWidgetHeight"]),
+                    new Font("Arial", int.Parse(ConfigurationManager.AppSettings["TaskSummaryWidgetFontSize"])));
+
             }
             bitmap.Save(filePath);
         }
@@ -57,14 +67,17 @@ namespace WallpaperTimeSheet.Utills
 
             int totalGaps = (workDays.Count - 1) + (workDays.Count / 7);
             int barWidth = (widgetWidth - ((int)font.Size * 2) - totalGaps * 15) / workDays.Count;
-            int barHeight = widgetHeight - ((int)font.Size * 4);
+            int barHeight = widgetHeight - ((int)font.Size * 6);
 
             int x = widgetX + ((int)font.Size * 3);
             int y = widgetY + ((int)font.Size * 2);
             int? currentMonth = null;
 
             int maxWorkHours = workDays.Max(wd => wd.Tasks.Values.Sum());
+            int totalHoursOnWeek = 0;
 
+            //Pen debugPen = new Pen(Color.Purple);
+            //g.DrawRectangle(debugPen, widgetX, widgetY, widgetWidth, widgetHeight);
 
             for (int i = 1; i <= maxWorkHours; i++)
             {
@@ -89,6 +102,7 @@ namespace WallpaperTimeSheet.Utills
                     Rectangle taskRect = new Rectangle(x, lastY - taskHeight + 2, barWidth, taskHeight - 2);
                     g.FillRoundedRectangle(taskBrush, taskRect, barWidth / 8);
                     lastY -= taskHeight;
+                    totalHoursOnWeek += task.Value; 
                 }
 
                 Font drawFont = font;
@@ -111,11 +125,29 @@ namespace WallpaperTimeSheet.Utills
                 }
 
                 if (day.Date.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    Point startingPoint = new Point(
+                        x - ((barWidth + margin) * 6), 
+                        y + barHeight + (int)font.Size * 2);
+                    Point endPoint = new Point(
+                        x + barWidth, 
+                        y + barHeight + (int)font.Size * 2);
+
+                    Point middlePoint = new Point(
+                        startingPoint.X + ((endPoint.X - startingPoint.X) / 2),
+                        y + barHeight + (int)font.Size * 2 + 10);
+
+                    Pen linePen = new Pen(drawBrush);
+                    g.DrawLine(linePen, startingPoint, endPoint); 
+                    g.DrawString("Totale ore: " + totalHoursOnWeek.ToString(), drawFont, drawBrush, middlePoint, drawFormat);
+                    totalHoursOnWeek = 0; 
                     x += margin;
+                }
 
                 x += barWidth + margin;
                 index++;
             }
+
         }
 
         private void DrawActiveTask(Graphics g, WorkTask task, int widgetX, int widgetY, int widgetWidth, int widgetHeight, Font font)
@@ -133,6 +165,26 @@ namespace WallpaperTimeSheet.Utills
 
             Rectangle textRect = new Rectangle(widgetX + 30, widgetY, widgetWidth - 60, widgetHeight);
             g.DrawString("Attività in corso: " + task.Label, font, new SolidBrush(Color.White), textRect, drawFormat);
+        }
+
+        private void DrawTaskSummary(Graphics g, List<TaskSummary> taskSummaries, int widgetX, int widgetY, int widgetWidth, int widgetHeight, Font font)
+        {
+            //Pen debugPen = new Pen(Color.Purple);
+            //g.DrawRectangle(debugPen, widgetX, widgetY, widgetWidth, widgetHeight);
+            int y = widgetY;
+            int x = widgetX;
+            foreach (TaskSummary taskSummary in taskSummaries)
+            {
+                SolidBrush borderBrush = new SolidBrush(ColorsUtilis.ToColor(taskSummary.task.Color));
+                Rectangle rect = new Rectangle(x, y, 8, (int)(font.Size * 3.5));
+                g.FillRoundedRectangle(borderBrush, rect, 4);
+
+                Font titleFont = new Font(font, FontStyle.Bold);
+                SolidBrush whiteBrush = new SolidBrush(Color.White);
+                g.DrawString(taskSummary.task.Label, titleFont, borderBrush, x + 10, y);
+                g.DrawString("Ore questo mese: " + taskSummary.TotalHours, font, whiteBrush, x + 10, y + (titleFont.Size * 2));
+                y += (int)(font.Size * 5);
+            }
         }
 
         private void DrawBackground(Graphics g)

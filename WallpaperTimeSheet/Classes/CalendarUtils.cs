@@ -5,12 +5,6 @@ namespace WallpaperTimeSheet.Utills
 {
     public class CalendarUtils
     {   
-        public CalendarUtils()
-        {
-            Days = new List<WorkDay>();
-        }
-        public List<WorkDay> Days { get; set; }
-
         public static DateTime GetCalendarStartDate()
         {
             var currentDate = DateTime.Now;
@@ -25,7 +19,7 @@ namespace WallpaperTimeSheet.Utills
             return GetCalendarStartDate().AddDays((7 * 6) - 1);
         }
 
-        public void ConvertWorkLogToWorkDay(List<WorkLog> workLogs)
+        public static List<WorkDay> ConvertWorkLogToWorkDay(List<WorkLog> workLogs)
         {
             var currentDate = DateTime.Now;
             var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
@@ -81,7 +75,7 @@ namespace WallpaperTimeSheet.Utills
             }
             if (lastLog.WorkTask != null)
             {
-                var hoursLeftInDay = 24 - lastLog.DateTime.Hour;
+                var hoursLeftInDay = DateTime.Now.Hour - lastLog.DateTime.Hour;
                 if (hoursLeftInDay > 0)
                 {
                     var task = lastLog.WorkTask;
@@ -93,7 +87,36 @@ namespace WallpaperTimeSheet.Utills
                 }
             }
 
-            Days = workDays.Values.ToList();
+            return workDays.Values.ToList();
+        }
+
+        internal static List<TaskSummary> ConvertWorkDaysToTaskSummary(List<WorkDay> workDays)
+        {
+            int CurrentMonth = DateTime.Now.Month;
+
+            List<TaskSummary> summaries = new();
+            foreach (WorkDay workDay in workDays)
+            {
+                if (workDay.Date.Month != CurrentMonth)
+                    continue;
+
+                foreach (KeyValuePair<WorkTask, int> task in workDay.Tasks)
+                {
+                    var summary = summaries.Find(s => s.task == task.Key);
+                    if (summary == null)
+                    {
+                        summary = new TaskSummary
+                        {
+                            task = task.Key,
+                            TotalHours = 0
+                        };
+                        summaries.Add(summary);
+                    }
+                    summary.TotalHours += task.Value;
+                }
+            }
+
+            return summaries;
         }
     }
 }

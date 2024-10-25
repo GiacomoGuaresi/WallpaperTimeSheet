@@ -27,11 +27,24 @@ namespace WallpaperTimeSheet
             _trayWindow = new TrayWindow(WorkTaskData.GetAllWorkTasks());
             _trayWindow.Loaded += (s, e) =>
             {
-                var screen = Screen.PrimaryScreen.WorkingArea;
                 var mousePosition = Control.MousePosition;
-                _trayWindow.Left = mousePosition.X - (_trayWindow.Width / 2);
-                _trayWindow.Top = screen.Bottom - _trayWindow.Height;
+
+                var currentScreen = Screen.FromPoint(mousePosition);
+                var workingArea = currentScreen.WorkingArea;
+
+                float scaleFactor = currentScreen.Bounds.Width / (float)SystemParameters.PrimaryScreenWidth;
+
+                _trayWindow.Left = (mousePosition.X / scaleFactor) - (_trayWindow.Width / 2);
+                _trayWindow.Top = (workingArea.Bottom / scaleFactor) - _trayWindow.Height;
+
+                if (_trayWindow.Left < workingArea.Left / scaleFactor)
+                    _trayWindow.Left = workingArea.Left / scaleFactor;
+                else if (_trayWindow.Left + _trayWindow.Width > workingArea.Right / scaleFactor)
+                    _trayWindow.Left = (workingArea.Right / scaleFactor) - _trayWindow.Width;
+
+                _trayWindow.Show();
             };
+
             _trayWindow.Deactivated += (s, e) => _trayWindow.Hide();
         }
 

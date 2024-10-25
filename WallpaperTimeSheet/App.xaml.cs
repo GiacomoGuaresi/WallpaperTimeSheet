@@ -98,7 +98,8 @@ namespace WallpaperTimeSheet
 
         protected override void OnExit(ExitEventArgs e)
         {
-            WorkLogData.UpsertWorkLogToDb(null, DateTime.Now);
+            WorkLogData.PurgeWorkLogAfterHour(DateTime.Now);
+            WorkLogData.UpsertWorkLogToDb(null, DateTime.Now, true);
             
             _notifyIcon?.Dispose();
             _trayWindow?.Close();

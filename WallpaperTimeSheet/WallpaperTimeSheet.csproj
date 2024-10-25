@@ -16,6 +16,7 @@
     <None Remove="Icons\ic_fluent_briefcase_off_24_filled.png" />
     <None Remove="Icons\ic_fluent_color_background_24_filled.png" />
     <None Remove="Icons\ic_fluent_door_arrow_left_24_filled.png" />
+    <None Remove="Icons\ic_fluent_image_arrow_counterclockwise_24_filled.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +48,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Icons\ic_fluent_door_arrow_left_24_filled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\ic_fluent_image_arrow_counterclockwise_24_filled.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

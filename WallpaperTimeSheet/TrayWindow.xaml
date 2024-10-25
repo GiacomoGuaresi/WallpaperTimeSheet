@@ -13,13 +13,13 @@
         Title="TrayWindow" Height="450" Width="300">
     <Window.Resources>
         <Style x:Key="ExitButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="#222222"/>
+            <Setter Property="BorderBrush" Value="#222222"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Grid>
-                            <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5"/>
+                            <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5" IsHitTestVisible="True"/>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -33,12 +33,15 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Button Content="TEST IMAGE" HorizontalAlignment="Left" Height="26" Margin="10,303,0,0" VerticalAlignment="Top" Width="110" Click="Button_Click"/>
-        <Button Content="Generate test data" HorizontalAlignment="Left" Height="26" Margin="10,334,0,0" VerticalAlignment="Top" Width="110" Click="Button4_Click"/>
+        <Button Content="Generate test data" HorizontalAlignment="Left" Height="26" Margin="10,371,0,0" VerticalAlignment="Top" Width="110" Click="Button4_Click"/>
         <ComboBox HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="280" Grid.ColumnSpan="2" x:Name="WorkTaskSelector" SelectionChanged="WorkTaskSelector_Change"/>
         <Label Content="Attività in corso" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="White"/>
         <Rectangle HorizontalAlignment="Center" Height="48" Margin="0,402,0,0" Fill="#222222" VerticalAlignment="Top" Width="300"/>
-        <Button Width="24" Height="24" Margin="268,418,0,0" Style="{StaticResource ExitButtonStyle}" Click="Exit_Click"/>
-        <Image Source="pack://application:,,,/Icons/ic_fluent_door_arrow_left_24_filled.png" RenderTransformOrigin="0.583,0.389" Margin="260,414,16,12"/>
+        <Button Click="Exit_Click" Width="24" Height="24" Margin="260,414,16,12" Style="{StaticResource ExitButtonStyle}"  Focusable="True">
+            <Image Source="pack://application:,,,/Icons/ic_fluent_door_arrow_left_24_filled.png"/>
+        </Button>
+        <Button Click="ReloadWallpaper_Click" Width="24" Height="24" Margin="16,414,260,12" Style="{StaticResource ExitButtonStyle}"  Focusable="True">
+            <Image Source="pack://application:,,,/Icons/ic_fluent_image_arrow_counterclockwise_24_filled.png"/>
+        </Button>
     </Grid>
 </Window>

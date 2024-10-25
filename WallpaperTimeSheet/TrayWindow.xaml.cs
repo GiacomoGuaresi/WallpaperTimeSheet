@@ -23,6 +23,8 @@ namespace WallpaperTimeSheet
             WorkTasks = workTasks;
             InitializeComponent();
 
+            workTasks.Sort((a, b) => a.Label.CompareTo(b.Label));
+
             WorkTaskSelector.Items.Add(WorkTaskData.None.Label);
             foreach (WorkTask workTask in WorkTasks)
                 WorkTaskSelector.Items.Add(workTask.Label);
@@ -32,37 +34,8 @@ namespace WallpaperTimeSheet
             WorkTaskSelector.SelectedItem = SelectedWorkTask.Label;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            UpdateWallpaper();
-        }
-
-        private void Button3_Click(object sender, RoutedEventArgs e)
-        {
-            List<WorkLog> workLogs = WorkLogData.GetWorkLogsFromDate(DateTime.Now.AddDays(-7));
-        }
-
         private void Button4_Click(object sender, RoutedEventArgs e)
         {
-            //WorkTaskData.AddWorkTaskToDb(new WorkTask
-            //{
-            //    Id = 1,
-            //    Color = TaskColors.Rosso.HexColor,
-            //    Label = "Task 1"
-            //});
-            //WorkTaskData.AddWorkTaskToDb(new WorkTask
-            //{
-            //    Id = 2,
-            //    Color = TaskColors.Verde.HexColor,
-            //    Label = "Task 2"
-            //});
-            //WorkTaskData.AddWorkTaskToDb(new WorkTask
-            //{
-            //    Id = 3,
-            //    Color = TaskColors.Blu.HexColor,
-            //    Label = "Task 3"
-            //});
-
             List<WorkTask> workTasks = WorkTaskData.GetAllWorkTasks();
             Random rnd = new Random();
 
@@ -104,6 +77,7 @@ namespace WallpaperTimeSheet
         private void WorkTaskSelector_Change(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             SelectedWorkTask = WorkTasks.Find(workTask => workTask.Label == WorkTaskSelector.SelectedItem.ToString());
+            WorkLogData.PurgeWorkLogAfterHour(DateTime.Now);
             WorkLogData.UpsertWorkLogToDb(SelectedWorkTask?.Id, DateTime.Now);
             UpdateWallpaper();
         }
@@ -125,6 +99,11 @@ namespace WallpaperTimeSheet
                 imageGenerator.Draw(workDays, SelectedWorkTask, summaries);
                 wallpaper.SetDefaultWallpaper();
             }).Start();
+        }
+
+        private void ReloadWallpaper_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateWallpaper();
         }
     }
 }

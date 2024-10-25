@@ -69,9 +69,16 @@ namespace WallpaperTimeSheet.Data
             }
         }
 
-        public static void UpsertWorkLogToDb(int? workTaskId, DateTime dateTime)
+        public static void UpsertWorkLogToDb(int? workTaskId, DateTime dateTime, bool roundToNextHour = false)
         {
-            dateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
+            if (roundToNextHour)
+            {
+                dateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0).AddHours(1);
+            }
+            else
+            {
+                dateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
+            }
 
             using (var db = new AppDbContext())
             {
@@ -96,6 +103,18 @@ namespace WallpaperTimeSheet.Data
             }
         }
 
+        public static void PurgeWorkLogAfterHour(DateTime dateTime)
+        {
+            using (var db = new AppDbContext())
+            {
+                var workLogsToDelete = db.WorkLogs
+                    .Where(wl => wl.DateTime > dateTime)
+                    .ToList();
+
+                db.WorkLogs.RemoveRange(workLogsToDelete);
+                db.SaveChanges();
+            }
+        }
 
     }
 }

@@ -13,12 +13,6 @@ public sealed class WindowsUtils
     [DllImport("user32.dll", CharSet = CharSet.Auto)]
     static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
 
-    [DllImport("user32.dll", CharSet = CharSet.Auto)]
-    private static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam, uint fuFlags, uint uTimeout, out IntPtr lpdwResult);
-
-    private const uint WM_SETTINGCHANGE = 0x001A;
-    private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xFFFF);
-
     public enum Style : int
     {
         Fill,

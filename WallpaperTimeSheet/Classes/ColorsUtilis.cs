@@ -10,5 +10,14 @@ namespace WallpaperTimeSheet.Utills
         public static string ToRGB(Color c) => $"RGB({c.R},{c.G},{c.B})";
 
         public static Color ToColor(string hex) => ColorTranslator.FromHtml(hex);
+
+        internal static System.Windows.Media.Color ToWindowsMediaColor(string hexColor)
+        {
+           return System.Windows.Media.Color.FromArgb(
+               ToColor(hexColor).A,
+               ToColor(hexColor).R,
+               ToColor(hexColor).G,
+               ToColor(hexColor).B);
+        }
     }
 }

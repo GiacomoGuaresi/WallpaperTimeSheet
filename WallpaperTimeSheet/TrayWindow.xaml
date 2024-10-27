@@ -43,5 +43,8 @@
         <Button Click="ReloadWallpaper_Click" Width="24" Height="24" Margin="16,414,260,12" Style="{StaticResource ExitButtonStyle}"  Focusable="True">
             <Image Source="pack://application:,,,/Icons/ic_fluent_image_arrow_counterclockwise_24_filled.png"/>
         </Button>
+        <Button Click="OpenTaskWindow_Click" Width="24" Height="24" Margin="45,414,231,12" Style="{StaticResource ExitButtonStyle}"  Focusable="True">
+            <Image Source="pack://application:,,,/Icons/ic_fluent_text_bullet_list_square_edit_24_filled.png"/>
+        </Button>
     </Grid>
 </Window>

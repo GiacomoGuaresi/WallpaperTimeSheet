@@ -1,18 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Windows;
-using System.Windows.Shapes;
 using WallpaperTimeSheet.Data;
 using WallpaperTimeSheet.Models;
 using WallpaperTimeSheet.Utills;
-using System.IO;
-using YourNamespace;
-using WallpaperTimeSheet.Classes;
 
 namespace WallpaperTimeSheet
 {
-    /// <summary>
-    /// Logica di interazione per TrayWindow.xaml
-    /// </summary>
     public partial class TrayWindow : Window
     {
         private List<WorkTask> WorkTasks { get; set; }
@@ -104,6 +97,12 @@ namespace WallpaperTimeSheet
         private void ReloadWallpaper_Click(object sender, RoutedEventArgs e)
         {
             UpdateWallpaper();
+        }
+
+        private void OpenTaskWindow_Click(object sender, RoutedEventArgs e)
+        {
+            TaskWindow taskWindow = new TaskWindow();
+            taskWindow.Show();
         }
     }
 }

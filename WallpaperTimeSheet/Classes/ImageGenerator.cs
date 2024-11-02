@@ -23,7 +23,7 @@ namespace WallpaperTimeSheet.Utills
             bitmap = new Bitmap((int)ScreenWidth, (int)ScreenHeight);
         }
 
-        public void Draw(List<WorkDay> workDays, WorkTask activeTask, List<TaskSummary> taskSummaries)
+        public void Draw(List<WorkDay> workDays, WorkTask activeTask, List<TaskSummary> taskSummaries, List<WorkLog> workLogs)
         {
             using (Graphics g = Graphics.FromImage(bitmap))
             {
@@ -56,6 +56,14 @@ namespace WallpaperTimeSheet.Utills
                     int.Parse(ConfigurationManager.AppSettings["TaskSummaryWidgetHeight"]),
                     new Font("Arial", int.Parse(ConfigurationManager.AppSettings["TaskSummaryWidgetFontSize"])));
 
+                DrawLog(
+                    g,
+                    workLogs,
+                    int.Parse(ConfigurationManager.AppSettings["LogWidgetX"]),
+                    int.Parse(ConfigurationManager.AppSettings["LogWidgetY"]),
+                    int.Parse(ConfigurationManager.AppSettings["LogWidgetWidth"]),
+                    int.Parse(ConfigurationManager.AppSettings["LogWidgetHeight"]),
+                    new Font("Arial", int.Parse(ConfigurationManager.AppSettings["LogWidgetFontSize"])));
             }
             bitmap.Save(filePath);
         }
@@ -198,6 +206,39 @@ namespace WallpaperTimeSheet.Utills
                     Color randomGray = Color.FromArgb(255, grayValue, grayValue, grayValue);
                     bitmap.SetPixel(x, y, randomGray);
                 }
+            }
+        }
+
+        private void DrawLog(Graphics g, List<WorkLog> workLogs, int widgetX, int widgetY, int widgetWidth, int widgetHeight, Font font)
+        {
+            //print all log in column 
+            int y = widgetY;
+            int x = widgetX;
+
+            workLogs.Sort((a, b) => b.DateTime.CompareTo(a.DateTime));
+
+            g.DrawLine(new Pen(Color.White), x, y, x, y + (font.Size * workLogs.Count * 2));
+
+            foreach (WorkLog workLog in workLogs)
+            {
+                string logText = workLog.DateTime.ToString("HH:mm");
+                logText += " - ";
+
+                SolidBrush brush = new SolidBrush(ColorsUtilis.ToColor(WorkTaskData.None.Color));
+                if (workLog.WorkTaskId == null)
+                {
+                    logText += WorkTaskData.None.Label;
+                }
+                else
+                {
+                    brush = new SolidBrush(ColorsUtilis.ToColor(workLog.WorkTask.Color));
+                    logText += workLog.WorkTask.Label;
+                }
+
+                g.DrawString(logText, font, new SolidBrush(Color.White), x + 10, y);
+                g.FillCircle(brush, x, y + font.Size, 7);
+
+                y += (int)font.Size * 2;
             }
         }
     }

@@ -21,5 +21,11 @@
 		<add key ="TaskSummaryWidgetWidth" value="400"/>
 		<add key ="TaskSummaryWidgetHeight" value="1200"/>
 		<add key ="TaskSummaryWidgetFontSize" value="24"/>
+
+		<add key ="LogWidgetX" value="1590"/>
+		<add key ="LogWidgetY" value="660"/>
+		<add key ="LogWidgetWidth" value="300"/>
+		<add key ="LogWidgetHeight" value="600"/>
+		<add key ="LogWidgetFontSize" value="12"/>
 	</appSettings>
 </configuration>

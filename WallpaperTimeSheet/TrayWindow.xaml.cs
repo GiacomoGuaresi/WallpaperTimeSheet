@@ -88,8 +88,12 @@ namespace WallpaperTimeSheet
 
             List<TaskSummary> summaries = CalendarUtils.ConvertWorkDaysToTaskSummary(workDays);
 
+
+            DateTime startOfToday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+            List<WorkLog> workLogsToday = WorkLogData.GetWorkLogsFromDate(startOfToday);
+
             new Task(() => { 
-                imageGenerator.Draw(workDays, SelectedWorkTask, summaries);
+                imageGenerator.Draw(workDays, SelectedWorkTask, summaries, workLogsToday);
                 wallpaper.SetDefaultWallpaper();
             }).Start();
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Windows.Controls;
 using WallpaperTimeSheet.Data;
@@ -93,6 +94,16 @@ namespace WallpaperTimeSheet.Utills
                 StringFormat drawFormat = new StringFormat();
                 drawFormat.Alignment = StringAlignment.Far;
                 g.DrawString(i.ToString(), font, new SolidBrush(Color.White), x, y + barHeight - scaleHeight, drawFormat);
+
+                var dashedPen = new Pen(Color.Gray);
+                float[] dashValues = { 2, 5, 2, 5 };
+                dashedPen.DashPattern = dashValues;
+                g.DrawLine(
+                    dashedPen, 
+                    x,
+                    y + barHeight - scaleHeight + font.Size, 
+                    x + widgetWidth - (((int)font.Size * 3) * 2),
+                    y + barHeight - scaleHeight + font.Size);
             }
 
             foreach (WorkDay day in workDays)
@@ -136,18 +147,19 @@ namespace WallpaperTimeSheet.Utills
                 {
                     Point startingPoint = new Point(
                         x - ((barWidth + margin) * 6), 
-                        y + barHeight + (int)font.Size * 2);
+                        y + barHeight + (int)(font.Size * 2.5));
                     Point endPoint = new Point(
                         x + barWidth, 
-                        y + barHeight + (int)font.Size * 2);
+                        y + barHeight + (int)(font.Size * 2.5));
 
                     Point middlePoint = new Point(
                         startingPoint.X + ((endPoint.X - startingPoint.X) / 2),
                         y + barHeight + (int)font.Size * 2 + 10);
 
-                    Pen linePen = new Pen(drawBrush);
+                    Pen linePen = new Pen(Color.Gray);
+                    Brush textBrush = new SolidBrush(Color.Gray);
                     g.DrawLine(linePen, startingPoint, endPoint); 
-                    g.DrawString("Totale ore: " + totalHoursOnWeek.ToString(), drawFont, drawBrush, middlePoint, drawFormat);
+                    g.DrawString("Totale ore: " + totalHoursOnWeek.ToString(), drawFont, textBrush, middlePoint, drawFormat);
                     totalHoursOnWeek = 0; 
                     x += margin;
                 }

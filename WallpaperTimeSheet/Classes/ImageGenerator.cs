@@ -229,7 +229,7 @@ namespace WallpaperTimeSheet.Utills
 
             workLogs.Sort((a, b) => b.DateTime.CompareTo(a.DateTime));
 
-            g.DrawLine(new Pen(Color.White), x, y, x, y + (font.Size * workLogs.Count * 2));
+            g.DrawLine(new Pen(Color.White), x, y, x, y + (font.Size * workLogs.Count * 2) - font.Size);
 
             foreach (WorkLog workLog in workLogs)
             {

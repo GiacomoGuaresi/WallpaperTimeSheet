@@ -66,5 +66,21 @@ namespace WallpaperTimeSheet.Classes
         public static readonly TaskColor Salvia = new TaskColor("#525e54");
         public static readonly TaskColor MimeticoDeserto = new TaskColor("#847545");
         public static readonly TaskColor Mimetico = new TaskColor("#7e735f");
+
+        internal static TaskColor? GetColorByHex(string color)
+        {
+            var properties = typeof(TaskColors).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+            foreach (var property in properties)
+            {
+                if (property.GetValue(null) is TaskColor taskColor && taskColor.HexColor.Equals(color, StringComparison.OrdinalIgnoreCase))
+                {
+                    return taskColor;
+                }
+            }
+
+            return null;
+        }
+
     }
 }

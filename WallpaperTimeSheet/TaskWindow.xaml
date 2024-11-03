@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="TaskWindow" Height="600" Width="450">
     <StackPanel>
-        <ListView x:Name="TaskLists" Height="150" Margin="10">
+        <ListView x:Name="TaskLists" Height="150" Margin="10" SelectionChanged="TaskLists_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <!-- Colonna Color con quadrato colorato -->
@@ -52,10 +52,12 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0">Label:</Label>
-            <TextBox Grid.Column="1"/>
+            <TextBox x:Name="label" Grid.Column="1"/>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button>Salva</Button>
+            <Button x:Name="DeleteButton" Click="Delete_Click" Content="Delete" IsEnabled="False"/>
+            <Button x:Name="UpdateButton" Click="Update_Click" Content="Update" Margin="10,0" IsEnabled="False"/>
+            <Button x:Name="SaveButton" Click="Save_Click" Content="Add"/>
         </StackPanel>
     </StackPanel>
 </Window>

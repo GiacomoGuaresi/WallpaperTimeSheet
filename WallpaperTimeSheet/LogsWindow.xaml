@@ -1,0 +1,41 @@
+﻿<Window x:Class="WallpaperTimeSheet.LogsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WallpaperTimeSheet" 
+        xmlns:classes="clr-namespace:WallpaperTimeSheet.Classes"    
+        mc:Ignorable="d"
+        Title="LogWindow" Height="600" Width="450">
+
+    <!-- Add TimeFormatConverter-->
+    <Window.Resources>
+        <classes:TimeFormatConverter x:Key="TimeFormatConverter"/>
+    </Window.Resources>
+    
+
+    <StackPanel>
+        <ListView x:Name="LogLists" Height="450" Margin="10" SelectionChanged="LogLists_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <!-- Colonna Label -->
+                    <GridViewColumn Header="DateTime" DisplayMemberBinding="{Binding DateTime, Converter={StaticResource TimeFormatConverter}}" />
+                    <!-- Colonna Color con quadrato colorato -->
+                    <GridViewColumn Header="Color">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Ellipse Width="16" Height="16" Fill="{Binding WorkTask.Color}" Stroke="LightGray" StrokeThickness="1"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Task" DisplayMemberBinding="{Binding WorkTask.Label}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="center" Margin="10">
+            <Button x:Name="PreviousButton" Click="Previous_Click" Content="Previous"/>
+            <Label x:Name="DateLabel">XX/XX/XXXX</Label>
+            <Button x:Name="NextButton" Click="Next_Click" Content="Next"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

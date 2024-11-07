@@ -108,5 +108,11 @@ namespace WallpaperTimeSheet
             TaskWindow taskWindow = new TaskWindow();
             taskWindow.Show();
         }
+
+        private void OpenLogWindow_Click(object sender, RoutedEventArgs e)
+        {
+            LogsWindow logsWindow = new LogsWindow();
+            logsWindow.Show();
+        }
     }
 }

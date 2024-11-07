@@ -58,6 +58,21 @@ namespace WallpaperTimeSheet.Data
                     .ToList();
             }
         }
+
+        public static List<WorkLog> GetWorkLogsOfDay(DateTime dateTime)
+        {
+            DateTime startDate = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
+            DateTime endDate = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
+
+            using (var db = new AppDbContext())
+            {
+                return db.WorkLogs
+                    .Where(wl => wl.DateTime >= startDate && wl.DateTime <= endDate)
+                    .Include(wl => wl.WorkTask)
+                    .ToList();
+            }
+        }
+
         public static WorkLog GetLastWorkLog()
         {
             using (var db = new AppDbContext())
@@ -77,6 +92,8 @@ namespace WallpaperTimeSheet.Data
             }
             else
             {
+                if (dateTime.Minute >= 30)
+                    dateTime = dateTime.AddHours(1);
                 dateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
             }
 

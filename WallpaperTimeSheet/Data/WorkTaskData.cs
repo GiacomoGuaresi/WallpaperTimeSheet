@@ -27,6 +27,24 @@ namespace WallpaperTimeSheet.Data
             }
         }
 
+        public static void RemoveWorkTask(WorkTask workTask)
+        {
+            using (var db = new AppDbContext())
+            {
+                db.WorkTasks.Remove(workTask);
+                db.SaveChanges();
+            }
+        }
+
+        public static void UpdateWorkTask(WorkTask workTask)
+        {
+            using (var db = new AppDbContext())
+            {
+                db.WorkTasks.Update(workTask);
+                db.SaveChanges();
+            }
+        }
+
         public static readonly WorkTask None = new WorkTask
         {
             Id = 0,

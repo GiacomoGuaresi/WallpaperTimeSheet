@@ -94,8 +94,7 @@ namespace WallpaperTimeSheet
 
         public void UpdateList()
         {
-            using var context = new AppDbContext();
-            WorkTasks = context.WorkTasks.OrderBy(task => task.Label).ToList();
+            WorkTasks = WorkTaskData.GetAllWorkTasks();
             TaskLists.ItemsSource = WorkTasks;
         }
 
@@ -136,22 +135,17 @@ namespace WallpaperTimeSheet
                 return;
             }
 
-            using var context = new AppDbContext();
-
             if (WorkTasks.Exists(task => task.Label == label.Text))
             {
                 System.Windows.MessageBox.Show("Task already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            WorkTask workTask = new WorkTask
+            WorkTaskData.AddWorkTaskToDb(new WorkTask
             {
                 Label = label.Text,
                 Color = SelectedColor.HexColor
-            };
-
-            context.WorkTasks.Add(workTask);
-            context.SaveChanges();
+            });
 
             UpdateList();
             ResetForm();
@@ -161,10 +155,7 @@ namespace WallpaperTimeSheet
         {
             if (TaskLists.SelectedItem != null)
             {
-                using var context = new AppDbContext();
-
-                context.Remove(TaskLists.SelectedItem);
-                context.SaveChanges();
+                WorkTaskData.RemoveWorkTask((WorkTask)TaskLists.SelectedItem);
 
                 UpdateList();
                 ResetForm();
@@ -196,8 +187,6 @@ namespace WallpaperTimeSheet
                 return;
             }
 
-            using var context = new AppDbContext();
-
             if(SelectedTask == null)
             {
                 System.Windows.MessageBox.Show("Task not found", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -207,9 +196,8 @@ namespace WallpaperTimeSheet
             SelectedTask.Label = label.Text;
             SelectedTask.Color = SelectedColor.HexColor;
             
-            context.Update(SelectedTask);
-            context.SaveChanges();
-            
+            WorkTaskData.UpdateWorkTask(SelectedTask);
+
             SelectedTask = null;
             UpdateList();
             ResetForm();

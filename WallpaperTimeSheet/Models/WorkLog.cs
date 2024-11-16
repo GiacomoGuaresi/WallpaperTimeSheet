@@ -17,7 +17,7 @@ namespace WallpaperTimeSheet.Models
 
         [ForeignKey("WorkTask")]
         public int? WorkTaskId { get; set; }
-        public virtual WorkTask WorkTask { get; set; }
+        public virtual WorkTask? WorkTask { get; set; }
 
 
         public string toString()

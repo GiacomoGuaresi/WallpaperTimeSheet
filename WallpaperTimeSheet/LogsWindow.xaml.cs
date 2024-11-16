@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Controls; 
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WallpaperTimeSheet.Data;
 using WallpaperTimeSheet.Models;
 using TextBox = System.Windows.Controls.TextBox;
@@ -60,7 +50,7 @@ namespace WallpaperTimeSheet
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox textBox = sender as TextBox;
+            TextBox? textBox = sender as TextBox;
             if (textBox != null && textBox.DataContext is WorkLog workLog)
             {
                 string newValue = textBox.Text;
@@ -88,7 +78,10 @@ namespace WallpaperTimeSheet
 
         private void AddLog_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox textBox = sender as TextBox;
+            TextBox? textBox = sender as TextBox;
+            if (textBox == null)
+                return;
+
             string newValue = textBox.Text;
 
             WorkLog workLog = new WorkLog();
@@ -126,7 +119,7 @@ namespace WallpaperTimeSheet
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            System.Windows.Controls.ComboBox comboBox = sender as System.Windows.Controls.ComboBox;
+            System.Windows.Controls.ComboBox? comboBox = sender as System.Windows.Controls.ComboBox;
             if (comboBox != null && comboBox.DataContext is WorkLog workLog && comboBox.SelectedValue != null)
             {
                 int newValue = (int)comboBox.SelectedValue;
@@ -140,13 +133,23 @@ namespace WallpaperTimeSheet
                     else
                     {
                         workLog.WorkTaskId = newValue;
-                        workLog.WorkTask = AvailableWorkTasks.Find(m => m.Id == newValue);
+                        workLog.WorkTask = AvailableWorkTasks.Find(m => m.Id == newValue) ?? throw new InvalidOperationException("WorkTask not found");
                     }
 
                     WorkLogData.UpdateWorkLog(workLog);
 
                     UpdateList();
                 }
+            }
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Button? button = sender as System.Windows.Controls.Button;
+            if (button != null && button.DataContext is WorkLog workLog)
+            {
+                WorkLogData.DeleteWorkLog(workLog);
+                UpdateList();
             }
         }
     }

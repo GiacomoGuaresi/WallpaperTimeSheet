@@ -15,11 +15,22 @@
     
 
     <StackPanel>
-        <ListView x:Name="LogLists" Height="450" Margin="10" SelectionChanged="LogLists_SelectionChanged">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="center" Margin="10">
+            <Button x:Name="PreviousButton" Click="Previous_Click" Content="Previous"/>
+            <Label x:Name="DateLabel">XX/XX/XXXX</Label>
+            <Button x:Name="NextButton" Click="Next_Click" Content="Next"/>
+        </StackPanel>
+        <ListView x:Name="LogLists" Height="450" Margin="10">
             <ListView.View>
                 <GridView>
-                    <!-- Colonna Label -->
-                    <GridViewColumn Header="DateTime" DisplayMemberBinding="{Binding DateTime, Converter={StaticResource TimeFormatConverter}}" />
+                    <!-- Colonna Label as text input-->
+                    <GridViewColumn Header="DateTime">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding DateTime, Converter={StaticResource TimeFormatConverter}}" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <!-- Colonna Color con quadrato colorato -->
                     <GridViewColumn Header="Color">
                         <GridViewColumn.CellTemplate>
@@ -28,14 +39,24 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Task" DisplayMemberBinding="{Binding WorkTask.Label}" />
+                    <GridViewColumn Header="Task" DisplayMemberBinding="{Binding WorkTask.Label}"></GridViewColumn>
+                    <GridViewColumn Header="Edit">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox 
+                                    ItemsSource="{Binding DataContext.AvailableWorkTasks, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                    DisplayMemberPath="Label" 
+                                    SelectedValuePath="Id"
+                                    SelectionChanged="ComboBox_SelectionChanged" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="center" Margin="10">
-            <Button x:Name="PreviousButton" Click="Previous_Click" Content="Previous"/>
-            <Label x:Name="DateLabel">XX/XX/XXXX</Label>
-            <Button x:Name="NextButton" Click="Next_Click" Content="Next"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20, 0">
+            <TextBox x:Name="hh" Width="40" LostFocus="AddLog_LostFocus" KeyDown="AddLog_KeyDown"/>
+            <Label> Add new log (hh:mm)</Label>
         </StackPanel>
     </StackPanel>
 </Window>

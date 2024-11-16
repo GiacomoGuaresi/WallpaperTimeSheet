@@ -16,7 +16,11 @@ namespace WallpaperTimeSheet.Classes
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value is string input && DateTime.TryParseExact(input, "HH:mm", culture, DateTimeStyles.None, out DateTime result))
+            {
+                return result;
+            }
+            return System.Windows.Data.Binding.DoNothing; // Non esegue l'update se il formato è errato
         }
     }
 

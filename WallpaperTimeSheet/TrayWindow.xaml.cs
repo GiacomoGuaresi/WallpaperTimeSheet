@@ -27,41 +27,6 @@ namespace WallpaperTimeSheet
             WorkTaskSelector.SelectedItem = SelectedWorkTask.Label;
         }
 
-        private void Button4_Click(object sender, RoutedEventArgs e)
-        {
-            List<WorkTask> workTasks = WorkTaskData.GetAllWorkTasks();
-            Random rnd = new Random();
-
-            DateTime moment = DateTime.Now;
-            moment = new DateTime(moment.Year, moment.Month, moment.Day, 8, 0, 0);
-
-            for (int i = 0; i < 30; i++)
-            {
-                foreach (WorkTask workTask in workTasks)
-                {
-                    WorkLog workLog = new WorkLog()
-                    {
-                        DateTime = moment,
-                        WorkTaskId = workTask.Id
-                    };
-                    Trace.WriteLine(workLog.toString());
-                    WorkLogData.AddWorkLogToDb(workLog);
-                    moment = moment.AddHours(rnd.Next(1, 4));
-                }
-
-                //Set to null to end day 
-                WorkLog workLogEndDay = new WorkLog()
-                {
-                    DateTime = moment
-                };
-                Trace.WriteLine(workLogEndDay.toString());
-                WorkLogData.AddWorkLogToDb(workLogEndDay);
-
-                moment = new DateTime(moment.Year, moment.Month, moment.Day, 8, 0, 0);
-                moment = moment.AddDays(-1);
-            }
-        }
-
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();

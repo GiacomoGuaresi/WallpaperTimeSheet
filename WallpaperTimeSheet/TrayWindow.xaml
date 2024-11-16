@@ -10,7 +10,7 @@
         ShowInTaskbar="False"
         Topmost="True"
         Background="#333333"
-        Title="TrayWindow" Height="450" Width="300">
+        Title="TrayWindow" Height="122" Width="300">
     <Window.Resources>
         <Style x:Key="ExitButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#222222"/>
@@ -32,23 +32,23 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid>
-        <Button Content="Generate test data" HorizontalAlignment="Left" Height="26" Margin="10,371,0,0" VerticalAlignment="Top" Width="110" Click="Button4_Click"/>
-        <ComboBox HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="280" Grid.ColumnSpan="2" x:Name="WorkTaskSelector" SelectionChanged="WorkTaskSelector_Change"/>
-        <Label Content="Attività in corso" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="White"/>
-        <Rectangle HorizontalAlignment="Center" Height="48" Margin="0,402,0,0" Fill="#222222" VerticalAlignment="Top" Width="300"/>
-        <Button Click="Exit_Click" Width="24" Height="24" Margin="260,414,16,12" Style="{StaticResource ExitButtonStyle}"  Focusable="True">
-            <Image Source="pack://application:,,,/Icons/ic_fluent_door_arrow_left_24_filled.png"/>
-        </Button>
-        <Button Click="ReloadWallpaper_Click" Width="24" Height="24" Margin="16,414,260,12" Style="{StaticResource ExitButtonStyle}"  Focusable="True">
-            <Image Source="pack://application:,,,/Icons/ic_fluent_image_arrow_counterclockwise_24_filled.png"/>
-        </Button>
-        <Button Click="OpenTaskWindow_Click" Width="24" Height="24" Margin="45,414,231,12" Style="{StaticResource ExitButtonStyle}"  Focusable="True">
-            <Image Source="pack://application:,,,/Icons/ic_fluent_text_bullet_list_square_edit_24_filled.png"/>
-        </Button>
-        <Button Click="OpenLogWindow_Click" Width="24" Height="24" Margin="74,414,202,12" Style="{StaticResource ExitButtonStyle}"  Focusable="True">
-            <Image Source="pack://application:,,,/Icons/ic_fluent_timeline_24_filled.png"/>
-        </Button>
-
-    </Grid>
+    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+        <Label Content="Attività in corso" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Margin="10 10 10 0"/>
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="280" Grid.ColumnSpan="2" x:Name="WorkTaskSelector" SelectionChanged="WorkTaskSelector_Change" Margin="10 0 10 20"/>
+        <StackPanel Orientation="Horizontal" Background="#222222">
+            <Button Click="ReloadWallpaper_Click" Width="24" Height="24" Style="{StaticResource ExitButtonStyle}"  Focusable="True" Margin="10">
+                <Image Source="pack://application:,,,/Icons/ic_fluent_image_arrow_counterclockwise_24_filled.png"/>
+            </Button>
+            <Button Click="OpenTaskWindow_Click" Width="24" Height="24"  Style="{StaticResource ExitButtonStyle}"  Focusable="True" Margin="10">
+                <Image Source="pack://application:,,,/Icons/ic_fluent_text_bullet_list_square_edit_24_filled.png"/>
+            </Button>
+            <Button Click="OpenLogWindow_Click" Width="24" Height="24" Style="{StaticResource ExitButtonStyle}"  Focusable="True" Margin="10">
+                <Image Source="pack://application:,,,/Icons/ic_fluent_timeline_24_filled.png"/>
+            </Button>
+            
+            <Button Click="Exit_Click" Width="24" Height="24" Style="{StaticResource ExitButtonStyle}"  Focusable="True" Margin="135 10 10 10">
+                <Image Source="pack://application:,,,/Icons/ic_fluent_door_arrow_left_24_filled.png"/>
+            </Button>
+        </StackPanel>
+    </StackPanel>
 </Window>

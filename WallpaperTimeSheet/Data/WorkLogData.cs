@@ -11,24 +11,6 @@ namespace WallpaperTimeSheet.Data
 {
     public static class WorkLogData
     {
-        public static void AddWorkLogToDb(WorkLog workLog)
-        {
-            using (var db = new AppDbContext())
-            {
-                db.WorkLogs.Add(workLog);
-                db.SaveChanges();
-            }
-        }
-
-        public static void UpdateWorkLog(WorkLog workLog)
-        {
-            using (var db = new AppDbContext())
-            {
-                db.WorkLogs.Update(workLog);
-                db.SaveChanges();
-            }
-        }
-
         public static void DeleteWorkLog(WorkLog workLog)
         {
             using (var db = new AppDbContext())

@@ -37,6 +37,7 @@ namespace WallpaperTimeSheet
             SelectedWorkTask = WorkTasks.Find(workTask => workTask.Label == WorkTaskSelector.SelectedItem.ToString());
             WorkLogData.PurgeWorkLogAfterHour(DateTime.Now);
             WorkLogData.UpsertWorkLogToDb(SelectedWorkTask?.Id, DateTime.Now);
+            ConfigData.UpsertData("LastUpdateExecution", DateTime.Now);
             UpdateWallpaper();
         }
  
@@ -78,6 +79,12 @@ namespace WallpaperTimeSheet
         {
             LogsWindow logsWindow = new LogsWindow();
             logsWindow.Show();
+        }
+
+        private void OpenSettingWindow_Click(object sender, RoutedEventArgs e)
+        {
+            SettingWindow settingWindow = new SettingWindow();
+            settingWindow.Show();
         }
     }
 }

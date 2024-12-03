@@ -1,6 +1,6 @@
-﻿using System.Timers;
-using System.Windows;
+﻿using System.Windows;
 using WallpaperTimeSheet.Data;
+using WallpaperTimeSheet.Models;
 
 namespace WallpaperTimeSheet
 {
@@ -11,15 +11,29 @@ namespace WallpaperTimeSheet
     {
         private NotifyIcon? _notifyIcon;
         private TrayWindow? _trayWindow;
-        private System.Timers.Timer _timer;
+        private System.Windows.Forms.Timer _timer;
+
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            //check if there is a worklog that is not closed and close it
+            WorkLog lastWorklog = WorkLogData.GetLastWorkLog();
+            if (lastWorklog.WorkTaskId != null)
+            {
+                string lastUpdateExecutionStr = ConfigData.GetData("LastUpdateExecution");
+                if(lastUpdateExecutionStr != null)
+                {
+                    DateTime lastUpdateExecution = DateTime.Parse(lastUpdateExecutionStr);
+                    WorkLogData.UpsertWorkLogToDb(null, lastUpdateExecution, false);
+                }   
+            }
+
             CreateNotifyIcon();
             CreateTrayWindow();
-            ShutdownMode = ShutdownMode.OnExplicitShutdown;
             ScheduleTask();
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
         }
 
         private void CreateTrayWindow()
@@ -78,35 +92,32 @@ namespace WallpaperTimeSheet
 
         private void ScheduleTask()
         {
-            DateTime now = DateTime.Now;
-            DateTime nextRun = new DateTime(now.Year, now.Month, now.Day, now.Hour, 1, 0).AddHours(now.Minute >= 1 ? 1 : 0);
-            double intervalToNextRun = (nextRun - now).TotalMilliseconds;
-
-            _timer = new System.Timers.Timer(intervalToNextRun);
-            _timer.Elapsed += Timer_Elapsed;
-            _timer.AutoReset = false;
+            _timer = new System.Windows.Forms.Timer();
+            _timer.Tick += new EventHandler(Timer_Elapsed);
+            _timer.Interval = 1000 * 60 * 15;
             _timer.Start();
         }
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        private void Timer_Elapsed(object sender, EventArgs e)
         {
+            ConfigData.UpsertData("LastUpdateExecution", DateTime.Now);
             TrayWindow.UpdateWallpaper();
-
-            _timer.Interval = TimeSpan.FromHours(1).TotalMilliseconds;
-            _timer.Start();
         }
 
-        protected override void OnExit(ExitEventArgs e)
+        private void OnProcessExit(object? sender, EventArgs e)
         {
+            setWorkLogToNone();
+        }
+
+        private void setWorkLogToNone()
+        {
+            ConfigData.UpsertData("LastUpdateExecution", DateTime.Now);
+
             WorkLogData.PurgeWorkLogAfterHour(DateTime.Now);
             WorkLogData.UpsertWorkLogToDb(null, DateTime.Now, true);
-            
-            _notifyIcon?.Dispose();
-            _trayWindow?.Close();
-            _timer?.Dispose();
 
-            base.OnExit(e);
+            _notifyIcon?.Dispose();
+            _timer?.Dispose();
         }
     }
-
 }

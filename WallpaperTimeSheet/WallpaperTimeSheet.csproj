@@ -7,6 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>Icons\ic_fluent_briefcase_24_filled.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,9 +16,14 @@
     <None Remove="Icons\ic_fluent_briefcase_off_24_filled.png" />
     <None Remove="Icons\ic_fluent_door_arrow_left_24_filled.png" />
     <None Remove="Icons\ic_fluent_image_arrow_counterclockwise_24_filled.png" />
+    <None Remove="Icons\ic_fluent_settings_24_filled.png" />
     <None Remove="Icons\ic_fluent_text_bullet_list_square_edit_24_filled.png" />
     <None Remove="Icons\ic_fluent_timeline_24_filled.png" />
     <None Remove="Icons\ic_fluent_time_picker_24_filled.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\ic_fluent_briefcase_24_filled.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +52,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Icons\ic_fluent_image_arrow_counterclockwise_24_filled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\ic_fluent_settings_24_filled.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Icons\ic_fluent_text_bullet_list_square_edit_24_filled.png">

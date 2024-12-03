@@ -14,6 +14,7 @@ namespace WallpaperTimeSheet
     {
         public DbSet<WorkTask> WorkTasks { get; set; }
         public DbSet<WorkLog> WorkLogs { get; set; }
+        public DbSet<Config> Configs { get; set; }
 
         public string path = Path.Combine(SpecialDirectories.MyDocuments, "WallpaperTimeSheet.db");
 

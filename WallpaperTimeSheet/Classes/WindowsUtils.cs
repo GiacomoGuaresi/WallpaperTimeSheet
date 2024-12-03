@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
 using System.Drawing;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 public sealed class WindowsUtils
@@ -72,4 +73,24 @@ public sealed class WindowsUtils
     {
         SetWallpaperWithStyle(filePath, Style.Fill);
     }
+
+    public static void AddToStartup()
+    {
+        string exePath = Process.GetCurrentProcess().MainModule.FileName;
+
+        // Aggiungi l'applicazione al registro
+        RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+        key.SetValue("WallpaperTimeSheet", exePath);
+    }
+    public static void RemoveFromStartup()
+    {
+        RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+        key.DeleteValue("WallpaperTimeSheet", false);
+    }
+    public static bool CheckIfInStartup()
+    {
+        RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+        return key.GetValue("WallpaperTimeSheet") != null;
+    }
+
 }

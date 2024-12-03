@@ -58,19 +58,17 @@ namespace WallpaperTimeSheet
                 // Prova a convertire il testo inserito (newValue) in un TimeSpan
                 if (TimeSpan.TryParseExact(newValue, "hh\\:mm", CultureInfo.InvariantCulture, out TimeSpan newTime))
                 {
-
                     WorkLogData.DeleteWorkLog(workLog);
+                    WorkLogData.UpsertWorkLogToDb(workLog.WorkTaskId, new DateTime(
+                            workLog.DateTime.Year,
+                            workLog.DateTime.Month,
+                            workLog.DateTime.Day,
+                            newTime.Hours,
+                            newTime.Minutes,
+                            0), false);
 
-                    DateTime newDateTime = new DateTime(
-                        SelectedDate.Year,
-                        SelectedDate.Month,
-                        SelectedDate.Day,
-                        newTime.Hours,
-                        newTime.Minutes,
-                        0);
+                    ConfigData.UpsertData("LastUpdateExecution", DateTime.Now);
 
-                    workLog.DateTime = newDateTime;
-                    WorkLogData.AddWorkLogToDb(workLog);
                     UpdateList();
                 }
             }
@@ -89,16 +87,17 @@ namespace WallpaperTimeSheet
             // Prova a convertire il testo inserito (newValue) in un TimeSpan
             if (TimeSpan.TryParseExact(newValue, "hh\\:mm", CultureInfo.InvariantCulture, out TimeSpan newTime))
             {
-                DateTime newDateTime = new DateTime(
-                    SelectedDate.Year,
-                    SelectedDate.Month,
-                    SelectedDate.Day,
-                    newTime.Hours,
-                    newTime.Minutes,
-                    0);
+                WorkLogData.UpsertWorkLogToDb(null, 
+                    new DateTime(
+                        SelectedDate.Year,
+                        SelectedDate.Month,
+                        SelectedDate.Day,
+                        newTime.Hours,
+                        newTime.Minutes,
+                        0), false);
 
-                workLog.DateTime = newDateTime;
-                WorkLogData.AddWorkLogToDb(workLog);
+                ConfigData.UpsertData("LastUpdateExecution", DateTime.Now);
+
                 UpdateList();
 
                 textBox.Text = ""; 
@@ -136,7 +135,9 @@ namespace WallpaperTimeSheet
                         workLog.WorkTask = AvailableWorkTasks.Find(m => m.Id == newValue) ?? throw new InvalidOperationException("WorkTask not found");
                     }
 
-                    WorkLogData.UpdateWorkLog(workLog);
+                    WorkLogData.UpsertWorkLogToDb(workLog.WorkTaskId, workLog.DateTime, false);
+
+                    ConfigData.UpsertData("LastUpdateExecution", DateTime.Now);
 
                     UpdateList();
                 }

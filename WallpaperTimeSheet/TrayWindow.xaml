@@ -36,6 +36,9 @@
         <Label Content="Attività in corso" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Margin="10 10 10 0"/>
         <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="280" Grid.ColumnSpan="2" x:Name="WorkTaskSelector" SelectionChanged="WorkTaskSelector_Change" Margin="10 0 10 20"/>
         <StackPanel Orientation="Horizontal" Background="#222222">
+            <Button Click="OpenSettingWindow_Click" Width="24" Height="24" Style="{StaticResource ExitButtonStyle}"  Focusable="True" Margin="10">
+                <Image Source="pack://application:,,,/Icons/ic_fluent_settings_24_filled.png"/>
+            </Button>
             <Button Click="ReloadWallpaper_Click" Width="24" Height="24" Style="{StaticResource ExitButtonStyle}"  Focusable="True" Margin="10">
                 <Image Source="pack://application:,,,/Icons/ic_fluent_image_arrow_counterclockwise_24_filled.png"/>
             </Button>
@@ -45,8 +48,7 @@
             <Button Click="OpenLogWindow_Click" Width="24" Height="24" Style="{StaticResource ExitButtonStyle}"  Focusable="True" Margin="10">
                 <Image Source="pack://application:,,,/Icons/ic_fluent_timeline_24_filled.png"/>
             </Button>
-            
-            <Button Click="Exit_Click" Width="24" Height="24" Style="{StaticResource ExitButtonStyle}"  Focusable="True" Margin="135 10 10 10">
+            <Button Click="Exit_Click" Width="24" Height="24" Style="{StaticResource ExitButtonStyle}"  Focusable="True" Margin="90 10 10 10">
                 <Image Source="pack://application:,,,/Icons/ic_fluent_door_arrow_left_24_filled.png"/>
             </Button>
         </StackPanel>

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using WallpaperTimeSheet.Data;
 using WallpaperTimeSheet.Models;
 
@@ -64,9 +65,11 @@ namespace WallpaperTimeSheet
 
         private void CreateNotifyIcon()
         {
+            string currentDirectory = System.Reflection.Assembly.GetEntryAssembly().Location;
+            currentDirectory = Path.GetDirectoryName(currentDirectory);
             _notifyIcon = new NotifyIcon
             {
-                Icon = new System.Drawing.Icon("Icons/ic_fluent_briefcase_24_filled.ico"),
+                Icon = new System.Drawing.Icon(Path.Combine(currentDirectory, "Icons/ic_fluent_briefcase_24_filled.ico")),
                 Visible = true
             };
             _notifyIcon.Click += NotifyIcon_Click;

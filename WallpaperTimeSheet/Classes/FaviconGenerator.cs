@@ -28,7 +28,9 @@ namespace WallpaperTimeSheet.Classes
             }
 
             // Sovrapporre l'icona
-            Icon overlayIcon = new Icon("Icons/ic_fluent_briefcase_24_filled.ico");
+            string currentDirectory = System.Reflection.Assembly.GetEntryAssembly().Location;
+            currentDirectory = Path.GetDirectoryName(currentDirectory);
+            Icon overlayIcon = new Icon(Path.Combine(currentDirectory,"Icons/ic_fluent_briefcase_24_filled.ico"));
             Bitmap overlayBmp = overlayIcon.ToBitmap();
 
             // Inverti i colori chiari dell'immagine

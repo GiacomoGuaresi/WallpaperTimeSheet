@@ -44,11 +44,9 @@ namespace WallpaperTimeSheet
         }
 
         private void CheckTrayColor_Click(object sender, RoutedEventArgs e)
-        {
-            FaviconGenerator faviconGenerator = new FaviconGenerator();
-            
+        {            
             System.Drawing.Color color = ColorsUtilis.ToColor("#"+hexColor.Text);
-            faviconGenerator.GenerateFavicon(color);
+            FaviconGenerator.GenerateFavicon(color);
         }
     }
 }

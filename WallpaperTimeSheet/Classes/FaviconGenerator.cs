@@ -9,7 +9,7 @@ namespace WallpaperTimeSheet.Classes
 {
     class FaviconGenerator
     {
-        public void GenerateFavicon(Color backgroundColor)
+        public static void GenerateFavicon(Color backgroundColor)
         {
             // Crea un bitmap 24x24
             Bitmap bmp = new Bitmap(24, 24);
@@ -27,20 +27,18 @@ namespace WallpaperTimeSheet.Classes
                 }
             }
 
+
             // Sovrapporre l'icona
             string currentDirectory = System.Reflection.Assembly.GetEntryAssembly().Location;
             currentDirectory = Path.GetDirectoryName(currentDirectory);
             Icon overlayIcon = new Icon(Path.Combine(currentDirectory,"Icons/ic_fluent_briefcase_24_filled.ico"));
             Bitmap overlayBmp = overlayIcon.ToBitmap();
 
-            // Inverti i colori chiari dell'immagine
-            Bitmap invertedOverlayBmp = InvertLightColors(overlayBmp);
-
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 // Sovrapposizione con alpha blending
                 var rect = new Rectangle(0, 0, 24, 24); // Centrare l'icona sulla bitmap 24x24
-                g.DrawImage(invertedOverlayBmp, rect);
+                g.DrawImage(overlayBmp, rect);
             }
 
             // Salva il risultato come ICO usando il MemoryStream
@@ -49,50 +47,17 @@ namespace WallpaperTimeSheet.Classes
                 bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                 ms.Seek(0, SeekOrigin.Begin);
 
-                using (var iconStream = new FileStream("favicon.ico", FileMode.Create))
+                using (var iconStream = new FileStream(Path.Combine(currentDirectory, "activeTaskIcon.ico"), FileMode.Create))
                 {
                     CreateIconFromStream(ms, iconStream);
                 }
             }
 
             // Carica e usa l'icona nella tray
-            Icon icon = new Icon("favicon.ico");
-            System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
-            notifyIcon.Icon = icon;
-            notifyIcon.Visible = true;
+            WallpaperTimeSheet.App.CahngeNoriIcon(Path.Combine(currentDirectory, "activeTaskIcon.ico"));
         }
 
-        private Bitmap InvertLightColors(Bitmap bmp)
-        {
-            Bitmap invertedBmp = new Bitmap(bmp.Width, bmp.Height);
-
-            for (int y = 0; y < bmp.Height; y++)
-            {
-                for (int x = 0; x < bmp.Width; x++)
-                {
-                    Color originalColor = bmp.GetPixel(x, y);
-
-                    // Inverti solo i colori chiari (luminosità > 200)
-                    if (originalColor.R > 200 && originalColor.G > 200 && originalColor.B > 200)
-                    {
-                        Color invertedColor = Color.FromArgb(
-                            originalColor.A, // Mantiene l'alpha
-                            255 - originalColor.R,
-                            255 - originalColor.G,
-                            255 - originalColor.B);
-                        invertedBmp.SetPixel(x, y, invertedColor);
-                    }
-                    else
-                    {
-                        invertedBmp.SetPixel(x, y, originalColor);
-                    }
-                }
-            }
-
-            return invertedBmp;
-        }
-
-        private System.Drawing.Drawing2D.GraphicsPath RoundedRectangle(Rectangle bounds, int radius)
+        private static System.Drawing.Drawing2D.GraphicsPath RoundedRectangle(Rectangle bounds, int radius)
         {
             int diameter = radius * 2;
             var path = new System.Drawing.Drawing2D.GraphicsPath();
@@ -104,7 +69,7 @@ namespace WallpaperTimeSheet.Classes
             return path;
         }
 
-        private void CreateIconFromStream(Stream inputPngStream, Stream outputIconStream)
+        private static void CreateIconFromStream(Stream inputPngStream, Stream outputIconStream)
         {
             // Usa un PNG per creare un file ICO valido
             BinaryWriter iconWriter = new BinaryWriter(outputIconStream);

@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
+using WallpaperTimeSheet.Classes;
 using WallpaperTimeSheet.Data;
 using WallpaperTimeSheet.Models;
 using WallpaperTimeSheet.Utills;
@@ -39,6 +41,15 @@ namespace WallpaperTimeSheet
             WorkLogData.UpsertWorkLogToDb(SelectedWorkTask?.Id, DateTime.Now);
             ConfigData.UpsertData("LastUpdateExecution", DateTime.Now);
             UpdateWallpaper();
+            if (SelectedWorkTask != null && !String.IsNullOrEmpty(SelectedWorkTask.Color)) { 
+                FaviconGenerator.GenerateFavicon(ColorsUtilis.ToColor(SelectedWorkTask.Color));
+            }
+            else
+            {
+                string currentDirectory = System.Reflection.Assembly.GetEntryAssembly().Location;
+                currentDirectory = Path.GetDirectoryName(currentDirectory);
+                WallpaperTimeSheet.App.CahngeNoriIcon(Path.Combine(currentDirectory, "Icons/ic_fluent_briefcase_off_24_filled.ico"));
+            }
         }
  
         public static void UpdateWallpaper()

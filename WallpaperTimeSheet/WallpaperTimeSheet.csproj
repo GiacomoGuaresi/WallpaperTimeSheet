@@ -13,6 +13,7 @@
   <ItemGroup>
     <None Remove="Icons\ic_fluent_briefcase_24_filled.ico" />
     <None Remove="Icons\ic_fluent_briefcase_24_filled.png" />
+    <None Remove="Icons\ic_fluent_briefcase_off_24_filled.ico" />
     <None Remove="Icons\ic_fluent_briefcase_off_24_filled.png" />
     <None Remove="Icons\ic_fluent_door_arrow_left_24_filled.png" />
     <None Remove="Icons\ic_fluent_image_arrow_counterclockwise_24_filled.png" />
@@ -24,6 +25,9 @@
 
   <ItemGroup>
     <Content Include="Icons\ic_fluent_briefcase_24_filled.ico" />
+    <Content Include="Icons\ic_fluent_briefcase_off_24_filled.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

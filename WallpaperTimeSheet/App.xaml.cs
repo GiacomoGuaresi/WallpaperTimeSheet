@@ -10,10 +10,9 @@ namespace WallpaperTimeSheet
     /// </summary>
     public partial class App : System.Windows.Application
     {
-        private NotifyIcon? _notifyIcon;
-        private TrayWindow? _trayWindow;
-        private System.Windows.Forms.Timer _timer;
-
+        private static NotifyIcon? _notifyIcon;
+        private static TrayWindow? _trayWindow;
+        private static System.Windows.Forms.Timer? _timer;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -63,13 +62,21 @@ namespace WallpaperTimeSheet
             _trayWindow.Deactivated += (s, e) => _trayWindow.Hide();
         }
 
+        public static void CahngeNoriIcon(string newIconPath)
+        {
+            if (_notifyIcon != null)
+            {
+                _notifyIcon.Icon = new System.Drawing.Icon(newIconPath);
+            }
+        }
+
         private void CreateNotifyIcon()
         {
             string currentDirectory = System.Reflection.Assembly.GetEntryAssembly().Location;
             currentDirectory = Path.GetDirectoryName(currentDirectory);
             _notifyIcon = new NotifyIcon
             {
-                Icon = new System.Drawing.Icon(Path.Combine(currentDirectory, "Icons/ic_fluent_briefcase_24_filled.ico")),
+                Icon = new System.Drawing.Icon(Path.Combine(currentDirectory, "Icons/ic_fluent_briefcase_off_24_filled.ico")),
                 Visible = true
             };
             _notifyIcon.Click += NotifyIcon_Click;

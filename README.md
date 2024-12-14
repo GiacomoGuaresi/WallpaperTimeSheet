@@ -33,9 +33,7 @@
 
 WallpaperTimeSheet is still under development, and the following features are being implemented:
 
-- **Configuration panel**: you will be able to customize the colors and settings of the program.
 - **Installer**: an installer will be released to facilitate installation.
-- **Saving settings to SQLite**: All task information will be stored in a local SQLite database.
 
 ## Screenshot
 

@@ -1,0 +1,19 @@
+﻿<Window x:Class="WallpaperTimeSheet.StartupPromptWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Seleziona attività" Height="200" Width="350"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Topmost="True"
+        Background="#222"
+        AllowsTransparency="False"
+        ShowInTaskbar="False">
+    <StackPanel Margin="20" VerticalAlignment="Center">
+        <TextBlock Text="Seleziona un'attività" Foreground="White" FontSize="16" Margin="0 0 0 10" />
+        <ComboBox x:Name="WorkTaskSelector" SelectionChanged="WorkTaskSelector_Change" Width="300" Margin="0 0 0 20" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Continua" Click="Continue_Click" Width="80" />
+        </StackPanel>
+    </StackPanel>
+</Window>

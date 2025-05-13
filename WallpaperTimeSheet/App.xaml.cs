@@ -33,6 +33,7 @@ namespace WallpaperTimeSheet
             CreateNotifyIcon();
             CreateTrayWindow();
             ScheduleTask();
+            OpenStartupPromptWindow();
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
         }
 
@@ -128,6 +129,37 @@ namespace WallpaperTimeSheet
 
             _notifyIcon?.Dispose();
             _timer?.Dispose();
+        }
+
+        private void OpenStartupPromptWindow()
+        {
+            var overlays = Screen.AllScreens.Select(screen =>
+            {
+                var bounds = screen.Bounds;
+                var rect = new Rect(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+                var overlay = new OverlayWindow(rect);
+                overlay.Show();
+                return overlay;
+            }).ToList();
+
+            var prompt = new StartupPromptWindow(WorkTaskData.GetAllWorkTasks());
+            prompt.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            prompt.Topmost = true;
+
+            // forza il focus e la visibilità
+            prompt.Loaded += (s, ev) =>
+            {
+                prompt.Activate(); // forza focus
+                prompt.Topmost = true; // ribadisce Topmost
+            };
+
+            prompt.ShowDialog();
+
+            // Chiudi tutti gli overlay
+            foreach (var overlay in overlays)
+                overlay.Close();
+            WorkTask? SelectedWorkTask = WorkLogData.GetLastWorkLog()?.WorkTask ?? WorkTaskData.None;
+            _trayWindow.WorkTaskSelector.SelectedItem = SelectedWorkTask.Label;
         }
     }
 }
